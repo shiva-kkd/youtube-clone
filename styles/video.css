@@ -21,7 +21,9 @@
     }
 }
 
-
+.video-priew{
+    cursor: pointer;
+}
 .thumbnails {
     width: 100%;
 }
