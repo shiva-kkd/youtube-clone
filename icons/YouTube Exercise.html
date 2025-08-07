@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)https://supersimple.dev/exercises/youtube/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>YouTube Exercise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="./YouTube Exercise_files/css2" rel="stylesheet">
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+      }
+
+      .Exercises-YouTube {
+        font-family: Roboto, Arial, sans-serif;
+        padding-top: 57px;
+        padding-left: 72px;
+        background-color: rgb(249, 249, 249);
+      }
+
+      .header {
+        display: flex;
+        height: 57px;
+        border-bottom: 1px solid rgb(222, 222, 222);
+        margin-bottom: 20px;
+        justify-content: space-between;
+        align-items: center;
+
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+
+        z-index: 100;
+      }
+
+      .left-section {
+        display: flex;
+        align-items: center;
+      }
+
+      .left-section .hamburger-menu {
+        height: 24px;
+        margin-left: 24px;
+        margin-right: 24px;
+        cursor: pointer;
+      }
+
+      .left-section .youtube-logo {
+        height: 20px;
+        cursor: pointer;
+      }
+
+      .middle-section {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        max-width: 470px;
+        margin-left: 60px;
+      }
+
+      .middle-section .search-button img {
+        height: 24px;
+      }
+
+      .middle-section .voice-search {
+        cursor: pointer;
+        height: 40px;
+        width: 40px;
+        border-radius: 20px;
+        border: none;
+        background-color: rgb(248, 248, 248);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .middle-section .voice-search img {
+        height: 24px;
+      }
+
+      .right-section {
+        display: flex;
+        align-items: center;
+        width: 182px;
+        justify-content: space-between;
+        margin-right: 24px;
+        margin-left: 29px;
+        flex-shrink: 0;
+      }
+
+      .right-section .icon {
+        cursor: pointer;
+        height: 24px;
+      }
+
+      .right-section .my-channel {
+        height: 32px;
+        cursor: pointer;
+      }
+
+      .notification-count {
+        background-color: rgb(204, 0, 0);
+        border-radius: 80px;
+        position: absolute;
+        top: -3px;
+        right: -7px;
+        color: white;
+        border: 2px solid white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 10px;
+        padding: 1.5px 5px;
+        pointer-events: none;
+      }
+
+      .search-bar {
+        font-family: Roboto, Arial, sans-serif;
+        height: 40px;
+        flex: 1;
+        width: 0;
+        min-width: 0;
+        padding-left: 12px;
+        font-size: 16px;
+        -webkit-font-smoothing: antialiased;
+
+        border: 1px solid rgb(204, 204, 204);
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
+
+        box-shadow: inset 0px 1px 2px rgb(238, 238, 238)
+      }
+
+      .search-bar:focus {
+        outline: 1px solid rgb(31, 92, 198);
+        outline-offset: -1px;
+      }
+
+      .search-bar::placeholder {
+        color: rgb(136, 136, 136);
+        font-size: 16px;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .search-button {
+        height: 40px;
+        width: 64px;
+
+        border: 1px solid rgb(204, 204, 204);
+        border-left: none;
+        border-top-right-radius: 2px;
+        border-bottom-right-radius: 2px;
+
+        background-color: rgb(247, 247, 247);
+        cursor: pointer;
+        margin-right: 8px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .search-button:hover {
+        background-color: rgb(239, 239, 239);
+      }
+
+      .search-button:active {
+        background-color: rgb(232, 232, 232);
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 56px;
+        bottom: 0;
+
+        background-color: white;
+        width: 72px;
+        padding-top: 4px;
+
+        z-index: 200;
+      }
+
+      .sidebar-link {
+        font-size: 10px;
+        height: 74px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        cursor: pointer;
+      }
+
+      .sidebar-link:hover {
+        background-color: rgb(238, 238, 238);
+      }
+
+      .sidebar-link img {
+        height: 24px;
+        margin-bottom: 6.5px;
+      }
+
+      .tooltip {
+        background-color: rgba(96, 96, 96, 0.9);
+        color: white;
+        font-size: 12px;
+        padding: 8px;
+        border-radius: 2px;
+        position: absolute;
+
+        bottom: -50px;
+
+        opacity: 0;
+        transition: opacity 0.15s;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+
+      .tooltip-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+      }
+
+      .tooltip-container:hover .tooltip {
+        opacity: 1;
+      }
+
+      main {
+        min-height: 120vh;
+      }
+
+      .video-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 8px;
+        row-gap: 22px;
+        padding: 20px;
+      }
+
+      @media (min-width: 870px) and (max-width: 1124px) {
+        .video-grid {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+      }
+
+      @media (min-width: 1125px) {
+        .video-grid {
+          grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+      }
+
+      .thumbnail {
+        width: 100%;
+      }
+
+      .video-title {
+        margin-top: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        width: 100%;
+        line-height: 20px;
+        margin-bottom: 0;
+
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+      }
+
+      .channel-name,
+      .video-stats {
+        font-size: 12px;
+        color: rgb(96, 96, 96);
+      }
+
+      .channel-name {
+        margin-top: 10px;
+        margin-bottom: 0;
+      }
+
+      .video-stats {
+        margin-top: 4px;
+      }
+
+      .channel-link {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .video-link {
+        text-decoration: none;
+        color: black;
+      }
+
+      .video-card {
+        padding: 4px;
+        vertical-align: top;
+      }
+
+      .video-info-grid {
+        display: grid;
+        grid-template-columns: 48px 1fr;
+      }
+
+      .channel-profile-pic img {
+        width: 36px;
+        border-radius: 36px;
+        margin-top: 8px;
+      }
+
+      .thumbnail-container {
+        position: relative;
+      }
+
+      .video-time {
+        position: absolute;
+        bottom: 11px;
+        right: 4px;
+
+        color: white;
+        background-color: rgba(0, 0, 0, 0.9);
+        font-size: 12px;
+        padding: 4px;
+        border-radius: 2px;
+        font-weight: 500;
+      }
+    </style>
+  <style type="text/css" id="operaUserStyle">
+  video {
+    filter: -opera-shader(url(data:text/plain;base64,Ly8gaHR0cHM6Ly9naXRodWIuY29tL0dQVU9wZW4tRWZmZWN0cy9GaWRlbGl0eUZYLUNBUwovLyB2MwoKdW5pZm9ybSBzaGFkZXIgaUNodW5rOwp1bmlmb3JtIGZsb2F0MiBpQ2h1bmtTaXplOwp1bmlmb3JtIGZsb2F0MiBpTW91c2U7CnVuaWZvcm0gZmxvYXQgaUFyZ3NbMV07Cgpjb25zdCBmbG9hdCBFUFNJT04gPSAwLjE7CmNvbnN0IGZsb2F0IFZfTUlOID0gMDsKY29uc3QgZmxvYXQgVl9MT1cgPSAwLjI1Owpjb25zdCBmbG9hdCBWX01FRCA9IDAuNTsKY29uc3QgZmxvYXQgVl9ISUdIID0gMC43NTsKY29uc3QgZmxvYXQgVl9NQVggPSAxOwoKY29uc3QgZmxvYXQgVEhSRVNIT0xEX0FSRUEgPSA4MDAgKiA2MDA7CmNvbnN0IGZsb2F0IE1JTl9BUkVBID0gNDAwICogMTAwOwpjb25zdCBmbG9hdCBNSU5fU1RSSVAgPSAyMDsKY29uc3QgZmxvYXQgTUFSR0lOID0gMTsKCmZsb2F0MyBwaXhlbChpbnQgeCwgaW50IHksIGZsb2F0MiB4eSkgewogICAgcmV0dXJuIGlDaHVuay5ldmFsKHh5ICsgZmxvYXQyKHgsIHkpKS5yZ2I7Cn0KCmZsb2F0MyBzaGFycGVuKGZsb2F0MiB4eSkgewogICAgZmxvYXQzIGYgPQogICAgICAgIHBpeGVsKC0xLCAtMSwgeHkpICogIDEgKwogICAgICAgIHBpeGVsKCAwLCAtMSwgeHkpICogLTEgKwogICAgICAgIHBpeGVsKCAxLCAtMSwgeHkpICogIDEgKwoKICAgICAgICBwaXhlbCgtMSwgMCwgeHkpICogLTEgICsKICAgICAgICBwaXhlbCggMCwgMCwgeHkpICogLTEgICsKICAgICAgICBwaXhlbCggMSwgMCwgeHkpICogLTEgICsKCiAgICAgICAgcGl4ZWwoLTEsIDEsIHh5KSAqIDEgICArCiAgICAgICAgcGl4ZWwoIDAsIDEsIHh5KSAqIC0xICArCiAgICAgICAgcGl4ZWwoIDEsIDEsIHh5KSAqIDE7CiAgICByZXR1cm4gZiAvIC0xOwp9CgpmbG9hdDQgUkdYMihmbG9hdDIgeHkpIHsKICAgIGZsb2F0NCBjb2xvciA9IGlDaHVuay5ldmFsKHh5KTsKCiAgICBpZiAoaUNodW5rU2l6ZS54ICogaUNodW5rU2l6ZS55IDwgTUlOX0FSRUEpIHsKICAgICAgICByZXR1cm4gY29sb3I7CiAgICB9CgogICAgaWYgKGlDaHVua1NpemUueSA8IE1JTl9TVFJJUCB8fCBpQ2h1bmtTaXplLnggPCBNSU5fU1RSSVApIHsKICAgICAgICByZXR1cm4gY29sb3I7CiAgICB9CgogICAgaWYgKHh5LnggPCBNQVJHSU4gfHwgeHkueCA+IChpQ2h1bmtTaXplLnggLSBNQVJHSU4pIHx8CiAgICAgICAgeHkueSA8IE1BUkdJTiB8fCB4eS55ID4gKGlDaHVua1NpemUueSAtIE1BUkdJTikpIHsKICAgICAgICByZXR1cm4gY29sb3I7CiAgICB9CgogICAgcmV0dXJuIGZsb2F0NChzaGFycGVuKHh5KSwgMSk7Cn0KCmZsb2F0IG1pbjMoZmxvYXQgeCwgZmxvYXQgeSwgZmxvYXQgeikgewogICAgcmV0dXJuIG1pbih4LCBtaW4oeSwgeikpOwp9CgpmbG9hdCBtYXgzKGZsb2F0IHgsIGZsb2F0IHksIGZsb2F0IHopIHsKICAgIHJldHVybiBtYXgoeCwgbWF4KHksIHopKTsKfQoKZmxvYXQgcmNwKGZsb2F0IHYpIHsKICAgIHJldHVybiAxIC8gdjsKfQoKZmxvYXQzIFJHWDMoZmxvYXQyIHh5LCBmbG9hdCBzdHJlbmd0aCkgewogICAgZmxvYXQzIGEgPSBwaXhlbCgtMSwgLTEsIHh5KTsKICAgIGZsb2F0MyBiID0gcGl4ZWwoIDAsIC0xLCB4eSk7CiAgICBmbG9hdDMgYyA9IHBpeGVsKCAxLCAtMSwgeHkpOwoKICAgIGZsb2F0MyBkID0gcGl4ZWwoLTEsIDAsIHh5KTsKICAgIGZsb2F0MyBlID0gcGl4ZWwoIDAsIDAsIHh5KTsKICAgIGZsb2F0MyBmID0gcGl4ZWwoIDEsIDAsIHh5KTsKCiAgICBmbG9hdDMgZyA9IHBpeGVsKC0xLCAxLCB4eSk7CiAgICBmbG9hdDMgaCA9IHBpeGVsKCAwLCAxLCB4eSk7CiAgICBmbG9hdDMgaSA9IHBpeGVsKCAxLCAxLCB4eSk7CgogICAgZmxvYXQgbW5SID0gbWluMyhtaW4zKGQuciwgZS5yLCBmLnIpLCBiLnIsIGgucik7CiAgICBmbG9hdCBtbkcgPSBtaW4zKG1pbjMoZC5nLCBlLmcsIGYuZyksIGIuZywgaC5nKTsKICAgIGZsb2F0IG1uQiA9IG1pbjMobWluMyhkLmIsIGUuYiwgZi5iKSwgYi5iLCBoLmIpOwoKICAgIGZsb2F0IG1uUjIgPSBtaW4zKG1pbjMobW5SLCBhLnIsIGMuciksIGcuciwgaS5yKTsKICAgIGZsb2F0IG1uRzIgPSBtaW4zKG1pbjMobW5HLCBhLmcsIGMuZyksIGcuZywgaS5nKTsKICAgIGZsb2F0IG1uQjIgPSBtaW4zKG1pbjMobW5CLCBhLmIsIGMuYiksIGcuYiwgaS5iKTsKCiAgICBtblIgPSBtblIgKyBtblIyOwogICAgbW5HID0gbW5HICsgbW5HMjsKICAgIG1uQiA9IG1uQiArIG1uQjI7CgogICAgZmxvYXQgbXhSID0gbWF4MyhtYXgzKGQuciwgZS5yLCBmLnIpLCBiLnIsIGgucik7CiAgICBmbG9hdCBteEcgPSBtYXgzKG1heDMoZC5nLCBlLmcsIGYuZyksIGIuZywgaC5nKTsKICAgIGZsb2F0IG14QiA9IG1heDMobWF4MyhkLmIsIGUuYiwgZi5iKSwgYi5iLCBoLmIpOwoKICAgIGZsb2F0IG14UjIgPSBtYXgzKG1heDMobXhSLCBhLnIsIGMuciksIGcuciwgaS5yKTsKICAgIGZsb2F0IG14RzIgPSBtYXgzKG1heDMobXhHLCBhLmcsIGMuZyksIGcuZywgaS5nKTsKICAgIGZsb2F0IG14QjIgPSBtYXgzKG1heDMobXhCLCBhLmIsIGMuYiksIGcuYiwgaS5iKTsKCiAgICBteFIgPSBteFIgKyBteFIyOwogICAgbXhHID0gbXhHICsgbXhHMjsKICAgIG14QiA9IG14QiArIG14QjI7CgogICAgZmxvYXQgcmNwTVIgPSByY3AobXhSKTsKICAgIGZsb2F0IHJjcE1HID0gcmNwKG14Ryk7CiAgICBmbG9hdCByY3BNQiA9IHJjcChteEIpOwoKICAgIGZsb2F0IGFtcFIgPSBzYXR1cmF0ZShtaW4obW5SLCAyIC0gbXhSKSAqIHJjcE1SKTsKICAgIGZsb2F0IGFtcEcgPSBzYXR1cmF0ZShtaW4obW5HLCAyIC0gbXhHKSAqIHJjcE1HKTsKICAgIGZsb2F0IGFtcEIgPSBzYXR1cmF0ZShtaW4obW5CLCAyIC0gbXhCKSAqIHJjcE1CKTsKCiAgICBhbXBSID0gc3FydChhbXBSKTsKICAgIGFtcEcgPSBzcXJ0KGFtcEcpOwogICAgYW1wQiA9IHNxcnQoYW1wQik7CgogICAgZmxvYXQgcGVhayA9IC1yY3AobWl4KDgsIDUsIHN0cmVuZ3RoKSk7CgogICAgZmxvYXQgd1IgPSBhbXBSICogcGVhazsKICAgIGZsb2F0IHdHID0gYW1wRyAqIHBlYWs7CiAgICBmbG9hdCB3QiA9IGFtcEIgKiBwZWFrOwoKICAgIGZsb2F0IHJjcFdlaWdodFIgPSByY3AoMSArIDQgKiB3Uik7CiAgICBmbG9hdCByY3BXZWlnaHRHID0gcmNwKDEgKyA0ICogd0cpOwogICAgZmxvYXQgcmNwV2VpZ2h0QiA9IHJjcCgxICsgNCAqIHdCKTsKCiAgICByZXR1cm4gZmxvYXQzKAogICAgICAgIHNhdHVyYXRlKChiLnIgKiB3UiArIGQuciAqIHdSICsgZi5yICogd1IgKyBoLnIgKiB3UiArIGUucikgKiByY3BXZWlnaHRSKSwKICAgICAgICBzYXR1cmF0ZSgoYi5nICogd0cgKyBkLmcgKiB3RyArIGYuZyAqIHdHICsgaC5nICogd0cgKyBlLmcpICogcmNwV2VpZ2h0RyksCiAgICAgICAgc2F0dXJhdGUoKGIuYiAqIHdCICsgZC5iICogd0IgKyBmLmIgKiB3QiArIGguYiAqIHdCICsgZS5iKSAqIHJjcFdlaWdodEIpKTsKfQoKCmZsb2F0NCBtYWluKGZsb2F0MiB4eSkgewoKICAgIGZsb2F0NCBvcmlnaW5hbENvbG9yID0gaUNodW5rLmV2YWwoeHkpOwogICAgaWYgKG9yaWdpbmFsQ29sb3IuYSA8IDEpIHsKICAgICAgICByZXR1cm4gaUNodW5rLmV2YWwoeHkpOwogICAgfQoKICAgIGZsb2F0IGludGVuc2l0eSA9IGlBcmdzWzBdOwogICAgZmxvYXQgc3RyZW5ndGggPSAwOwogICAgZmxvYXQzIGNvbG9yOwoKICAgIGlmIChpbnRlbnNpdHkgPCBWX01JTiArIEVQU0lPTikgewogICAgICAgIHN0cmVuZ3RoID0gMC4xMDsKICAgICAgICBjb2xvciA9IFJHWDMoeHksIHN0cmVuZ3RoKTsKCiAgICB9IGVsc2UgaWYgKGludGVuc2l0eSA+IFZfTE9XIC0gRVBTSU9OICYmIGludGVuc2l0eSA8IFZfTE9XICsgRVBTSU9OKSB7CiAgICAgICAgc3RyZW5ndGggPSAwLjMzOwogICAgICAgIGNvbG9yID0gUkdYMyh4eSwgc3RyZW5ndGgpOwoKICAgIH0gZWxzZSBpZiAoaW50ZW5zaXR5ID4gVl9NRUQgLSBFUFNJT04gJiYgaW50ZW5zaXR5IDwgVl9NRUQgKyBFUFNJT04pIHsKICAgICAgICBzdHJlbmd0aCA9IDAuNTsKICAgICAgICBjb2xvciA9IFJHWDMoeHksIHN0cmVuZ3RoKTsKCiAgICB9IGVsc2UgaWYgKGludGVuc2l0eSA+IFZfSElHSCAtIEVQU0lPTiAmJiBpbnRlbnNpdHkgPCBWX0hJR0ggKyBFUFNJT04pIHsKICAgICAgICBzdHJlbmd0aCA9IDAuOTk7CiAgICAgICAgY29sb3IgPSBSR1gzKHh5LCBzdHJlbmd0aCk7CgogICAgfSBlbHNlIGlmIChpbnRlbnNpdHkgPiBWX01BWCAtIEVQU0lPTikgewogICAgICAgIHN0cmVuZ3RoID0gMTsKICAgICAgICBjb2xvciA9IFJHWDIoeHkpLnJnYjsKICAgIH0KCiAgICByZXR1cm4gZmxvYXQ0KGNvbG9yLCBvcmlnaW5hbENvbG9yLmEpOwp9) -opera-args(1.00 calc(env(-opera-accent-color-r, 255)/255) calc(env(-opera-accent-color-g, 255)/255) calc(env(-opera-accent-color-b, 255)/255)));
+  }
+</style><style type="text/css">:root img[width="728"][height="90"], :root [href="https://adstub.net/cina777/"], :root [href="https://adstub.net/arab777/"], :root [href="https://adstub.net/ratu89/"], :root [href="https://adstub.net/judi89/"], :root [href^="//mage98rquewz.com/"], :root [href^="//x4pollyxxpush.com/"], :root span[id^="ezoic-pub-ad-placeholder-"], :root ins.adsbygoogle[data-ad-slot], :root ins.adsbygoogle[data-ad-client], :root img[src^="https://s-img.adskeeper.com/"], :root guj-ad, :root gpt-ad, :root div[id^="zergnet-widget"], :root div[id^="vuukle-ad-"], :root div[id^="taboola-stream-"], :root div[id^="sticky_ad_"], :root div[id^="st"][style^="z-index: 999999999;"], :root div[id^="gpt_ad_"], :root div[id^="ezoic-pub-ad-"], :root div[id^="dfp-ad-"], :root div[id^="crt-"][style], :root div[id^="adspot-"], :root div[id^="adrotate_widgets-"], :root ps-connatix-module, :root div[id^="ad_position_"], :root div[id^="ad-div-"], :root div[id*="ScriptRoot"], :root div[id*="MarketGid"], :root [href="https://adstub.net/rusia777/"], :root div[data-id-advertdfpconf], :root div[data-dfp-id], :root hl-adsense, :root div[data-contentexchange-widget], :root div[data-alias="300x250 Ad 2"], :root div[data-adzone], :root div[data-adunit-path], :root div[data-adname], :root div[data-ad-targeting], :root div[data-ad-region], :root div[data-ad-placeholder], :root div[aria-label="Ads"], :root display-ads, :root display-ad-component, :root atf-ad-slot, :root aside[id^="adrotate_widgets-"], :root amp-fx-flying-carpet, :root amp-embed[type="taboola"], :root amp-connatix-player, :root amp-ad-custom, :root amp-ad, :root div[id^="google_dfp_"], :root ad-slot, :root ad-shield-ads, :root a[style="width:100%;height:100%;z-index:10000000000000000;position:absolute;top:0;left:0;"], :root a[onmousedown^="this.href='https://paid.outbrain.com/network/redir?"] + .ob_source, :root a[href^="https://xbet-4.com/"], :root div[id^="ad-position-"], :root a[href^="https://www.toprevenuegate.com/"], :root a[href^="https://www.purevpn.com/"][href*="&utm_source=aff-"], :root a[href^="https://www.privateinternetaccess.com/"] > img, :root a[href^="https://www.onlineusershielder.com/"], :root a[href^="https://financeads.net/tc.php?"], :root a[href^="https://www.mrskin.com/tour"], :root a[href^="https://www.infowarsstore.com/"] > img, :root a[href^="https://www.highperformancecpmgate.com/"], :root a[href^="https://www.highcpmrevenuenetwork.com/"], :root a[href^="https://www.get-express-vpn.com/offer/"], :root a[href^="https://lnkxt.bannerator.com/"], :root a[href^="https://www.geekbuying.com/dynamic-ads/"], :root a[href^="https://www.financeads.net/tc.php?"], :root a[href^="https://www.effectiveratecpm.com/"], :root [href^="https://www.herbanomic.com/"] > img, :root a[href^="https://maymooth-stopic.com/"], :root a[href^="https://www.dql2clk.com/"], :root a[href^="https://www.nutaku.net/signup/landing/"], :root a[href^="https://www.dating-finder.com/signup/?ai_d="], :root a[href^="https://explore-site.com/"], :root a[href^="https://www.brazzersnetwork.com/landing/"], :root a[href^="https://www.adxsrve.com/"], :root [data-template-type="nativead"], :root a[href^="https://www.endorico.com/Smartlink/"], :root a[href^="https://www.adultempire.com/"][href*="?partner_id="], :root a[href^="https://voluum.prom-xcams.com/"], :root a[href^="https://twinrdsyte.com/"], :root a[href^="https://twinrdsrv.com/"], :root a[href^="https://trk.nfl-online-streams.club/"], :root a[href^="https://tracking.avapartner.com/"], :root a[href^="https://track.wg-aff.com"], :root a[href^="https://track.ultravpn.com/"], :root a[href^="https://track.afcpatrk.com/"], :root a[href^="https://torguard.net/aff.php"] > img, :root [data-identity="adhesive-ad"], :root a[href^="https://tc.tradetracker.net/"] > img, :root a[href^="https://tatrck.com/"], :root a[href^="https://click.candyoffers.com/"], :root [href^="https://zstacklife.com/"] img, :root a[href^="https://t.aslnk.link/"], :root a[href^="https://t.adating.link/"], :root a[href^="https://go.trackitalltheway.com/"], :root [href^="https://track.fiverr.com/visit/"] > img, :root a[href^="https://syndication.exoclick.com/"], :root a[href^="https://syndication.dynsrvtbg.com/"], :root div[data-alias="300x250 Ad 1"], :root a[href^="https://syndicate.contentsserved.com/"], :root a[href^="https://svb-analytics.trackerrr.com/"], :root [href="https://adstub.net/gaza88/"], :root a[href^="https://ad.doubleclick.net/"], :root a[href^="https://static.fleshlight.com/images/banners/"], :root a[href^="https://slkmis.com/"], :root bottomadblock, :root a[href^="https://s.zlinkd.com/"], :root a[href^="https://s.zlink3.com/"], :root a[href^="https://www.mrskin.com/account/"], :root a[href^="https://s.optzsrv.com/"], :root a[href^="https://s.ma3ion.com/"], :root a[href^="https://s.eunow4u.com/"], :root #kt_player > div[style$="display: block;"][style*="inset: 0px;"], :root [href$="/sexdating.php"], :root a[href^="https://quotationfirearmrevision.com/"], :root a[href^="https://pubads.g.doubleclick.net/"], :root a[href^="https://prf.hn/click/"][href*="/camref:"] > img, :root a[href^="https://www.dating-finder.com/?ai_d="], :root a[href^="https://serve.awmdelivery.com/"], :root a[href^="https://prf.hn/click/"][href*="/adref:"] > img, :root app-ad, :root [href^="https://ap.octopuspop.com/click/"] > img, :root a[href^="https://postback1win.com/"], :root a[href^="https://mmwebhandler.aff-online.com/"], :root a[href^="https://www.bet365.com/"][href*="affiliate="], :root a[href^="https://pb-track.com/"], :root a[href^="https://pb-front.com/"], :root a[href^="https://paid.outbrain.com/network/redir?"], :root a[href^="https://streamate.com/landing/click/"], :root div[class^="Adstyled__AdWrapper-"], :root a[href^="https://osfultrbriolenai.info/"], :root a[href^="https://upsups.click/"], :root a[href^="https://ndt5.net/"], :root a[href^="https://natour.naughtyamerica.com/track/"], :root a[href^="https://mediaserver.entainpartners.com/renderBanner.do?"], :root a[href^="https://m.do.co/c/"] > img, :root a[href^="https://lead1.pl/"], :root a[href^="https://landing.brazzersnetwork.com/"], :root a[href^="https://join.virtuallust3d.com/"], :root a[href^="https://kiksajex.com/"], :root a[href^="https://juicyads.in/"], :root a[href^="https://snowdayonline.xyz/"], :root a[href^="https://mediaserver.gvcaffiliates.com/renderBanner.do?"], :root a[href^="https://join.dreamsexworld.com/"], :root a[href^="https://jaxofuna.com/"], :root a[href^="https://italarizege.xyz/"], :root a[href^="https://iqbroker.com/"][href*="?aff="], :root a[href^="https://identicaldrench.com/"], :root a[href^="https://hot-growngames.life/"], :root a[href^="https://helmethomicidal.com/"], :root a[href^="https://golinks.work/"], :root ark-top-ad, :root a[href^="https://s.zlinkn.com/"], :root a[href^="https://go.xxxvjmp.com/"], :root [class^="tile-picker__CitrusBannerContainer-sc-"], :root a[href^="https://go.xxxiijmp.com"], :root a[href^="https://go.xtbaffiliates.com/"], :root [data-role="tile-ads-module"], :root a[href^="https://go.xlviirdr.com"], :root div[class$="-adlabel"], :root a[href^="https://go.xlviiirdr.com"], :root a[href^="https://ismlks.com/"], :root [href^="https://www.mypillow.com/"] > img, :root a[href^="https://go.xlirdr.com"], :root [data-css-class="dfp-inarticle"], :root a[href^="https://l.hyenadata.com/"], :root a[href^="https://go.tmrjmp.com"], :root a[href^="https://zirdough.net/"], :root a[href^="https://s.deltraff.com/"], :root a[href^="https://go.markets.com/visit/?bta="], :root a[href^="https://billing.purevpn.com/aff.php"] > img, :root a[href^="https://go.hpyrdr.com/"], :root a[href^="https://lijavaxa.com/"], :root a[href^="https://go.goaserv.com/"], :root a[href^="https://t.hrtye.com/"], :root a[href^="https://go.etoro.com/"] > img, :root a[href^="https://go.dmzjmp.com"], :root a[href^="https://www.bang.com/?aff="], :root #mgb-container > #mgb, :root a[href^="https://go.admjmp.com"], :root a[href^="https://ak.stikroltiltoowi.net/"], :root a[href^="https://get.surfshark.net/aff_c?"][href*="&aff_id="] > img, :root a[href^="https://www.adskeeper.com"], :root a[data-redirect^="https://paid.outbrain.com/network/redir?"], :root [href^="https://clicks.affstrack.com/"] > img, :root a[href^="https://ak.hauchiwu.com/"], :root a[href^="https://engine.phn.doublepimp.com/"], :root a[href^="https://engine.blueistheneworanges.com/"], :root a[href^="https://drumskilxoa.click/"], :root a[href^="https://dl-protect.net/"], :root a[href*=".foxqck.com/"], :root a[href^="https://ctosrd.com/"], :root a[href^="https://clixtrac.com/"], :root [href^="https://noqreport.com/"] > img, :root a[href^="https://clicks.pipaffiliates.com/"], :root app-advertisement, :root a[href^="https://getmatchedlocally.com/"], :root a[href^="https://clickins.slixa.com/"], :root a[href^="https://datewhisper.life/"], :root a[href^="https://get-link.xyz/"], :root a[href^="https://click.linksynergy.com/fs-bin/"] > img, :root a[href^="https://combodef.com/"], :root a[href^="https://click.hoolig.app/"], :root a[href^="https://click.ggpickaff.com/"], :root a[href^="https://track.totalav.com/"], :root a[href^="https://ctrdwm.com/"], :root img[src^="https://images.purevpnaffiliates.com"], :root a[href^="https://porntubemate.com/"], :root a[href^="https://clickadilla.com/"], :root a[href^="https://click.dtiserv2.com/"], :root a[href^="https://go.xlvirdr.com"], :root a[href^="http://www.iyalc.com/"], :root a[href^="https://claring-loccelkin.com/"], :root a[href^="https://bongacams2.com/track?"], :root a[href^="https://t.ajrkm1.com/"], :root a[href^="https://bongacams10.com/track?"], :root a[href^="https://www.sheetmusicplus.com/"][href*="?aff_id="], :root a[href^="https://bngpt.com/"], :root a[href^="https://black77854.com/"], :root a[href^="https://rixofa.com/"], :root #ads[style^="position: absolute; z-index: 30; width: 100%; height"], :root a[href^="https://disobediencecalculatormaiden.com/"], :root a[href^="https://best-experience-cool.com/"], :root a[href^="https://banners.livepartners.com/"], :root a[href^="https://myclick-2.com/"], :root a[href^="https://sexynearme.com/"], :root a[href^="https://baipahanoop.net/"], :root a[href^="http://revolvemockerycopper.com/"], :root a[href^="https://awptjmp.com/"], :root a[href^="https://join.sexworld3d.com/track/"], :root a[href^="https://aweptjmp.com/"], :root a[href^="https://ausoafab.net/"], :root a[href^="https://adclick.g.doubleclick.net/"], :root a[href^="https://aj1070.online/"], :root a[href^="https://bc.game/"], :root a[href^="https://ak.oalsauwy.net/"], :root a[href^="https://a.bestcontentoperation.top/"], :root a[href^="https://adultfriendfinder.com/go/"], :root a[href^="https://ads.planetwin365affiliate.com/"], :root a[href^="https://ads.leovegas.com/"], :root .nya-slot[style], :root a[href^="https://a.bestcontentweb.top/"], :root a[href^="https://a2.adform.net/"], :root a[href^="https://a.candyai.love/"], :root a[href^="https://playnano.online/offerwalls/?ref="], :root a[href^="https://a.adtng.com/"], :root .banner-img > .pbl, :root [data-m-ad-id], :root a[href^="https://a-ads.com/"], :root [id^="ad_slider"], :root a[href^="https://click.ggpickyaff.com/"], :root broadstreet-zone-container, :root a[href^="https://ak.psaltauw.net/"], :root a[href^="https://1winpb.com/"], :root div[id^="rc-widget-"], :root a[href^="http://eslp34af.click/"], :root a[href^="https://turnstileunavailablesite.com/"], :root a[href^="https://chaturbate.com/in/?"], :root a[href^="https://prf.hn/click/"][href*="/creativeref:"] > img, :root a[href*="&maxads="], :root a[href^="http://www.adultempire.com/unlimited/promo?"][href*="&partner_id="], :root a[href^="https://1betandgonow.com/"], :root a[href^="https://eergortu.net/"], :root div[id^="optidigital-adslot"], :root a[href^="https://123-stream.org/"], :root a[href^="https://in.rabbtrk.com/"], :root a[href^="http://www.h4trck.com/"], :root a[href^="http://www.friendlyduck.com/AF_"], :root a[href^="https://go.rmhfrtnd.com"], :root a[href^="https://allhost.shop/aff.php?"], :root [data-dynamic-ads], :root a[href^="http://vnte9urn.click/"], :root a[href^="http://troopsassistedstupidity.com/"], :root a[href^="http://trk.globwo.online/"], :root a[href^="https://random-affiliate.atimaze.com/"], :root a-ad, :root a[href^="https://offhandpump.com/"], :root a[href^="http://stickingrepute.com/"], :root #slashboxes > .deals-rail, :root a[href^="http://roadcontagion.com/"], :root a[href^="http://premonitioninventdisagree.com/"], :root a[href^="http://cam4com.go2cloud.org/aff_c?"], :root a[href^="https://ads.betfair.com/redirect.aspx?"], :root [href^="https://www.mypatriotsupply.com/"] > img, :root a[href^="https://trk.softonixs.xyz/"], :root [data-advadstrackid], :root a[href^="http://muzzlematrix.com/"], :root a[href^="https://track.adform.net/"], :root a[href^="http://avthelkp.net/"], :root a[href^="https://a.medfoodhome.com/"], :root a[href^="https://engine.flixtrial.com/"], :root [data-type="ad-vertical"], :root [data-taboola-options], :root a[href^="http://annulmentequitycereals.com/"], :root a[href^="//startgaming.net/tienda/" i], :root a[href^="https://join.virtualtaboo.com/track/"], :root [id^="ad_sky"], :root a[href^="http://coefficienttolerategravel.com/"], :root a[href^="https://a.medfoodsafety.com/"], :root a[href^="//go.eabids.com/"], :root a[href^="//ejitsirdosha.net/"], :root a[href^=" https://www.friendlyduck.com/AF_"], :root [data-cl-spot-id], :root a[href*="/jump/next.php?r="], :root a[href^="https://go.rmishe.com/"], :root [href^="https://ilovemyfreedoms.com/landing-"], :root a[href^="https://syndication.optimizesrv.com/"], :root a[href*="//daichoho.com/"], :root a[href^="https://go.nordvpn.net/aff"] > img, :root .\[\&_\.gdprAdTransparencyCogWheelButton\]\:\!pjra-z-\[5\], :root [href^="http://clicks.totemcash.com/"], :root a[href^="https://ad.zanox.com/ppc/"] > img, :root a[href^="https://lone-pack.com/"], :root [data-d-ad-id], :root a[href*=".engine.adglare.net/"], :root a[href^="https://t.ajrkm3.com/"], :root [href^="https://aads.com/campaigns/"], :root a[href^="//stighoazon.com/"], :root [href^="https://www.profitablegatecpm.com/"], :root div[id^="lazyad-"], :root a[href^="http://com-1.pro/"], :root a[href*=".cfm?domain="][href*="&fp="], :root [data-ad-name], :root a[href^="https://loboclick.com/"], :root a[data-url^="https://vulpix.bet/?ref="], :root a[href^="https://ab.advertiserurl.com/aff/"], :root a[data-oburl^="https://paid.outbrain.com/network/redir?"], :root a[href^="https://go.xlivrdr.com"], :root [onclick^="location.href='https://1337x.vpnonly.site/"], :root [name^="google_ads_iframe"], :root [id^="section-ad-banner"], :root a[href^="https://www.goldenfrog.com/vyprvpn?offer_id="][href*="&aff_id="], :root a[href*="//jjgirls.com/sex/Chaturbate"], :root [id^="ad-wrap-"], :root [href^="https://zone.gotrackier.com/"], :root a[href^="http://sarcasmadvisor.com/"], :root [href^="https://www.restoro.com/"], :root [href^="https://www.targetingpartner.com/"], :root .section-subheader > .section-hotel-prices-header, :root [href^="https://www.hostg.xyz/"] > img, :root a[href^="http://adultfriendfinder.com/go/"], :root a[href^="https://fastestvpn.com/lifetime-special-deal?a_aid="], :root a[href^="https://tour.mrskin.com/"], :root [href^="https://www.brighteonstore.com/products/"] img, :root citrus-ad-wrapper, :root a[href^="https://go.grinsbest.com/"], :root a[href^="https://vo2.qrlsx.com/"], :root [href^="https://www.avantlink.com/click.php"] img, :root a[href^="https://t.acam.link/"], :root a[href^="https://go.strpjmp.com/"], :root [href^="https://url.totaladblock.com/"], :root div[id^="div-ads-"], :root [href^="https://rapidgator.net/article/premium/ref/"], :root [href^="https://join.girlsoutwest.com/"], :root a[href^="https://activate-game.com/"], :root .scroll-fixable.rail-right > .deals-rail, :root [data-wpas-zoneid], :root a[href^="https://track.aftrk3.com/"], :root [href^="https://join3.bannedsextapes.com"], :root a[href^="https://bodelen.com/"], :root a[href*=".g2afse.com/"], :root div[id^="adngin-"], :root [data-rc-widget], :root span[data-ez-ph-id], :root [href^="https://track.aftrk1.com/"], :root [href^="https://join.playboyplus.com/track/"], :root a[href^="https://go.xxxijmp.com"], :root [href^="https://istlnkcl.com/"], :root a[href^="https://tm-offers.gamingadult.com/"], :root [href^="https://charmingdatings.life/"], :root [href="https://adstub.net/indo666/"], :root [href^="https://glersakr.com/"], :root a[href^="https://a.bestcontentfood.top/"], :root [href^="https://cpa.10kfreesilver.com/"], :root [data-id^="div-gpt-ad"], :root a[href^="https://tracker.loropartners.com/"], :root [href^="https://awbbjmp.com/"], :root div[ow-ad-unit-wrapper], :root a[data-href^="http://ads.trafficjunky.net/"], :root a[href^="http://partners.etoro.com/"], :root a[href^="https://www.friendlyduck.com/AF_"], :root [href^="https://ad1.adfarm1.adition.com/"], :root a[href^="https://bngprm.com/"], :root [href^="https://shiftnetwork.infusionsoft.com/go/"] > img, :root a[href^="https://go.bushheel.com/"], :root a[href^="https://ctjdwm.com/"], :root a[href^="https://camfapr.com/landing/click/"], :root div[data-ad-wrapper], :root .gnt_em_vp_c[data-g-s="vp_dk"], :root [href="//sexcams.plus/"], :root [href^="http://www.mypillow.com/"] > img, :root a[href^="https://promerycergerful.com/"], :root #kt_player > a[target="_blank"], :root a[href^="http://bongacams.com/track?"], :root [href^="http://mypillow.com/"] > img, :root [href="https://ourgoldguy.com/contact/"] img, :root .ob_container .item-container-obpd, :root [id^="div-gpt-ad"], :root a[href^="https://go.rmhfrtnd.com/"], :root [href="https://jdrucker.com/gold"] > img, :root a[href^="https://www.liquidfire.mobi/"], :root .grid > .container > #aside-promotion, :root DFP-AD, :root [href^="https://go.xlrdr.com"], :root a[href^="https://s.cant3am.com/"], :root [data-testid^="taboola-"], :root a[href^="https://track.1234sd123.com/"], :root zeus-ad, :root [data-testid="prism-ad-wrapper"], :root [href^="https://ad.admitad.com/"], :root [href^="https://mypillow.com/"] > img, :root [data-testid="ad_testID"], :root [href^="https://antiagingbed.com/discount/"] > img, :root a[href*=".adsrv.eacdn.com/"], :root [href^="https://optimizedelite.com/"] > img, :root [data-name="adaptiveConstructorAd"], :root a[href^="https://go.cmtaffiliates.com/"], :root [data-testid="adBanner-wrapper"], :root [href^="https://mylead.global/stl/"] > img, :root [href^="https://mypatriotsupply.com/"] > img, :root a[href^="https://go.hpyjmp.com"], :root iframe[scrolling="no"][sandbox*="allow-popups allow-modals"][style^="width: 100%; height: 100%; border: none;"], :root [href^="https://mystore.com/"] > img, :root a[href^="https://81ac.xyz/"], :root [href^="https://wct.link/click?"], :root div[data-adunit], :root app-large-ad, :root [href^="https://turtlebids.irauctions.com/"] img, :root a[href^="https://believessway.com/"], :root a[href^="https://witnessjacket.com/"], :root [data-mobile-ad-id], :root [class^="amp-ad-"], :root a[href^="http://handgripvegetationhols.com/"], :root a[href^="https://go.bbrdbr.com"], :root a[href^="https://fc.lc/ref/"], :root [data-adshim], :root topadblock, :root a[href^="//s.zlinkd.com/"], :root #teaser1[style^="width:autopx;"], :root [href^="https://www.cloudways.com/en/?id"], :root [data-asg-ins], :root a[href^="https://gamingadlt.com/?offer="], :root [data-desktop-ad-id], :root [data-adbridg-ad-class], :root #teaser3[style^="width:autopx;"], :root [data-adblockkey], :root [data-block-type="ad"], :root [data-ad-width], :root [onclick*="content.ad/"], :root [data-ad-manager-id], :root AMP-AD, :root [data-ad-cls], :root [data-ez-name], :root a[href^="https://go.mnaspm.com/"], :root a[href^="https://service.bv-aff-trx.com/"], :root a[href^="https://6-partner.com/"], :root [class^="s2nPlayer"], :root a[href^="https://traffdaq.com/"], :root [data-testid="commercial-label-taboola"], :root [class^="div-gpt-ad"], :root a[href^="http://tc.tradetracker.net/"] > img, :root a[href^="https://www8.smartadserver.com/"], :root a[href^="https://pb-imc.com/"], :root [href^="https://affiliate.fastcomet.com/"] > img, :root [class^="adDisplay-module"], :root [data-freestar-ad][id], :root AD-SLOT, :root a[href^="https://www.googleadservices.com/pagead/aclk?"] > img, :root [data-ad-module], :root a[href^="https://go.skinstrip.net"][href*="?campaignId="], :root #teaser2[style^="width:autopx;"], :root [data-revive-zoneid], :root a[href^="https://losingoldfry.com/"], :root div[id^="div-gpt-"], :root a[href^="https://gml-grp.com/"], :root .ob_dual_right > .ob_ads_header ~ .odb_div, :root a[href^="https://cam4com.go2cloud.org/"], :root a[href^="http://li.blogtrottr.com/click?"], :root a[onmousedown^="this.href='https://paid.outbrain.com/network/redir?"], :root a[href^="https://t.ajump1.com/"], :root a[href^="https://go.xxxjmp.com"], :root #leader-companion > a[href], :root a[href^="https://wittered-mainging.com/"], :root #teaser3[style="width: 100%;text-align: center;display: scroll;position:fixed;bottom: 0;margin: 0 auto;z-index: 103;"], :root [href^="https://wwp.hoqodd.com/redirect-zone/"] { display: none !important; }</style></head>
+  <body>
+    <div class="Exercises-YouTube">
+      <header class="header">
+        <div class="left-section">
+          <img class="hamburger-menu" src="./YouTube Exercise_files/hamburger-menu.svg">
+          <img class="youtube-logo" src="./YouTube Exercise_files/youtube-logo.svg">
+        </div>
+
+        <div class="middle-section">
+          <input class="search-bar" type="text" placeholder="Search">
+          <button class="search-button tooltip-container">
+            <img src="./YouTube Exercise_files/search.svg">
+            <div class="tooltip">Search</div>
+          </button>
+          <button class="voice-search tooltip-container">
+            <img src="./YouTube Exercise_files/voice-search-icon.svg">
+            <div class="tooltip">Search with your voice</div>
+          </button>
+        </div>
+
+        <div class="right-section">
+          <div class="tooltip-container">
+            <img class="icon" src="./YouTube Exercise_files/upload.svg">
+            <div class="tooltip">Create</div>
+          </div>
+          <div class="tooltip-container">
+            <img class="icon" src="./YouTube Exercise_files/youtube-apps.svg">
+            <div class="tooltip">YouTube apps</div>
+          </div>
+          <div class="tooltip-container">
+            <img class="icon" src="./YouTube Exercise_files/notifications.svg">
+            <div class="notification-count">3</div>
+            <div class="tooltip">Notifications</div>
+          </div>
+          <img class="my-channel" src="./YouTube Exercise_files/my-channel.jpeg">
+        </div>
+      </header>
+
+      <nav class="sidebar">
+        <div class="sidebar-link">
+          <img src="./YouTube Exercise_files/home.svg">
+          <div>Home</div>
+        </div>
+        <div class="sidebar-link">
+          <img src="./YouTube Exercise_files/explore.svg">
+          <div>Explore</div>
+        </div>
+        <div class="sidebar-link">
+          <img src="./YouTube Exercise_files/subscriptions.svg">
+          <div>Subscriptions</div>
+        </div>
+        <div class="sidebar-link">
+          <img src="./YouTube Exercise_files/originals.svg">
+          <div>Originals</div>
+        </div>
+        <div class="sidebar-link">
+          <img src="./YouTube Exercise_files/youtube-music.svg">
+          <div>YouTube Music</div>
+        </div>
+        <div class="sidebar-link">
+          <img src="./YouTube Exercise_files/library.svg">
+          <div>Library</div>
+        </div>
+      </nav>
+
+      <main>
+        <section class="video-grid">
+          <div class="video-card">
+            <div class="thumbnail-container">
+              <a href="https://www.youtube.com/watch?v=n2RNcPRtAiY">
+                <img class="thumbnail" src="./YouTube Exercise_files/thumbnail-1.webp">
+              </a>
+              <div class="video-time">14:20</div>
+            </div>
+            <div class="video-info-grid">
+              <div class="channel-profile-pic">
+                <a href="https://www.youtube.com/c/mkbhd">
+                  <img src="./YouTube Exercise_files/channel-1.jpeg">
+                </a>
+              </div>
+              <div class="video-info">
+                <p class="video-title">
+                  <a class="video-link" href="https://www.youtube.com/watch?v=n2RNcPRtAiY">
+                    Talking Tech and AI with Google CEO Sundar Pichai!
+                  </a>
+                </p>
+                <p class="channel-name">
+                  <a class="channel-link" href="https://www.youtube.com/c/mkbhd">
+                    Marques Brownlee
+                  </a>
+                </p>
+                <p class="video-stats">
+                  3.4M views · 6 months ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="thumbnail-container">
+              <a href="https://www.youtube.com/watch?v=mP0RAo9SKZk">
+                <img class="thumbnail" src="./YouTube Exercise_files/thumbnail-2.webp">
+              </a>
+              <div class="video-time">8:22</div>
+            </div>
+            <div class="video-info-grid">
+              <div class="channel-profile-pic">
+                <a href="https://www.youtube.com/c/markiplier">
+                  <img src="./YouTube Exercise_files/channel-2.jpeg">
+                </a>
+              </div>
+              <div class="video-info">
+                <p class="video-title">
+                  <a class="video-link" href="https://www.youtube.com/watch?v=mP0RAo9SKZk">
+                    Try Not To Laugh Challenge #9
+                  </a>
+                </p>
+                <p class="channel-name">
+                  <a class="channel-link" href="https://www.youtube.com/c/markiplier">
+                    Markiplier
+                  </a>
+                </p>
+                <p class="video-stats">
+                  19M views · 4 years ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="thumbnail-container">
+              <a href="https://www.youtube.com/watch?v=FgjPQQeTh1w">
+                <img class="thumbnail" src="./YouTube Exercise_files/thumbnail-3.webp">
+              </a>
+              <div class="video-time">9:13</div>
+            </div>
+            <div class="video-info-grid">
+              <div class="channel-profile-pic">
+                <a href="https://www.youtube.com/user/SSSniperWolf">
+                  <img src="./YouTube Exercise_files/channel-3.jpeg">
+                </a>
+              </div>
+              <div class="video-info">
+                <p class="video-title">
+                  <a class="video-link" href="https://www.youtube.com/watch?v=FgjPQQeTh1w">
+                    Crazy Tik Toks Taken Moments Before DISASTER
+                  </a>
+                </p>
+                <p class="channel-name">
+                  <a class="channel-link" href="https://www.youtube.com/user/SSSniperWolf">
+                    SSSniperWolf
+                  </a>
+                </p>
+                <p class="video-stats">
+                  12M views · 1 year ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="thumbnail-container">
+              <a href="https://www.youtube.com/watch?v=094y1Z2wpJg">
+                <img class="thumbnail" src="./YouTube Exercise_files/thumbnail-4.webp">
+              </a>
+              <div class="video-time">22:09</div>
+            </div>
+            <div class="video-info-grid">
+              <div class="channel-profile-pic">
+                <a href="https://www.youtube.com/c/veritasium">
+                  <img src="./YouTube Exercise_files/channel-4.jpeg">
+                </a>
+              </div>
+              <div class="video-info">
+                <p class="video-title">
+                  <a class="video-link" href="https://www.youtube.com/watch?v=094y1Z2wpJg">
+                    The Simplest Math Problem No One Can Solve - Collatz Conjecture
+                  </a>
+                </p>
+                <p class="channel-name">
+                  <a class="channel-link" href="https://www.youtube.com/c/veritasium">
+                    Veritasium
+                  </a>
+                </p>
+                <p class="video-stats">
+                  18M views · 4 months ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="thumbnail-container">
+              <a href="https://www.youtube.com/watch?v=86CQq3pKSUw">
+                <img class="thumbnail" src="./YouTube Exercise_files/thumbnail-5.webp">
+              </a>
+              <div class="video-time">11:17</div>
+            </div>
+            <div class="video-info-grid">
+              <div class="channel-profile-pic">
+                <a href="https://www.youtube.com/c/CSDojo">
+                  <img src="./YouTube Exercise_files/channel-5.jpeg">
+                </a>
+              </div>
+              <div class="video-info">
+                <p class="video-title">
+                  <a class="video-link" href="https://www.youtube.com/watch?v=86CQq3pKSUw">
+                    Kadane's Algorithm to Maximum Sum Subarray Problem
+                  </a>
+                </p>
+                <p class="channel-name">
+                  <a class="channel-link" href="https://www.youtube.com/c/CSDojo">
+                    CS Dojo
+                  </a>
+                </p>
+                <p class="video-stats">
+                  519K views · 5 years ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="thumbnail-container">
+              <a href="https://www.youtube.com/watch?v=yXWw0_UfSFg">
+                <img class="thumbnail" src="./YouTube Exercise_files/thumbnail-6.webp">
+              </a>
+              <div class="video-time">19:59</div>
+            </div>
+            <div class="video-info-grid">
+              <div class="channel-profile-pic">
+                <a href="https://www.youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA">
+                  <img src="./YouTube Exercise_files/channel-6.jpeg">
+                </a>
+              </div>
+              <div class="video-info">
+                <p class="video-title">
+                  <a class="video-link" href="https://www.youtube.com/watch?v=yXWw0_UfSFg">
+                    Anything You Can Fit In The Circle I’ll Pay For
+                  </a>
+                </p>
+                <p class="channel-name">
+                  <a class="channel-link" href="https://www.youtube.com/channel/UCX6OQ3DkcsbYNE6H8uQQuVA">
+                    MrBeast
+                  </a>
+                </p>
+                <p class="video-stats">
+                  141M views · 1 year ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="thumbnail-container">
+              <a href="https://www.youtube.com/watch?v=fNVa1qMbF9Y">
+                <img class="thumbnail" src="./YouTube Exercise_files/thumbnail-7.webp">
+              </a>
+              <div class="video-time">10:13</div>
+            </div>
+            <div class="video-info-grid">
+              <div class="channel-profile-pic">
+                <a href="https://www.youtube.com/channel/UCP5tjEmvPItGyLhmjdwP7Ww">
+                  <img src="./YouTube Exercise_files/channel-7.jpeg">
+                </a>
+              </div>
+              <div class="video-info">
+                <p class="video-title">
+                  <a class="video-link" href="https://www.youtube.com/watch?v=fNVa1qMbF9Y">
+                    Why Planes Don't Fly Over Tibet
+                  </a>
+                </p>
+                <p class="channel-name">
+                  <a class="channel-link" href="https://www.youtube.com/channel/UCP5tjEmvPItGyLhmjdwP7Ww">
+                    RealLifeLore
+                  </a>
+                </p>
+                <p class="video-stats">
+                  6.6M views · 1 year ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="thumbnail-container">
+              <a href="https://www.youtube.com/watch?v=lFm4EM1juls">
+                <img class="thumbnail" src="./YouTube Exercise_files/thumbnail-8.webp">
+              </a>
+              <div class="video-time">7:12</div>
+            </div>
+            <div class="video-info-grid">
+              <div class="channel-profile-pic">
+                <a href="https://www.youtube.com/channel/UCHAK6CyegY22Zj2GWrcaIxg">
+                  <img src="./YouTube Exercise_files/channel-8.jpeg">
+                </a>
+              </div>
+              <div class="video-info">
+                <p class="video-title">
+                  <a class="video-link" href="https://www.youtube.com/watch?v=lFm4EM1juls">
+                    Inside The World's Biggest Passenger Plane
+                  </a>
+                </p>
+                <p class="channel-name">
+                  <a class="channel-link" href="https://www.youtube.com/channel/UCHAK6CyegY22Zj2GWrcaIxg">
+                    Tech Vision
+                  </a>
+                </p>
+                <p class="video-stats">
+                  3.7M views · 10 months ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="thumbnail-container">
+              <a href="https://www.youtube.com/watch?v=ixmxOlcrlUc">
+                <img class="thumbnail" src="./YouTube Exercise_files/thumbnail-9.webp">
+              </a>
+              <div class="video-time">13:17</div>
+            </div>
+            <div class="video-info-grid">
+              <div class="channel-profile-pic">
+                <a href="https://www.youtube.com/c/OFFICIALTHENXSTUDIOS">
+                  <img src="./YouTube Exercise_files/channel-9.jpeg">
+                </a>
+              </div>
+              <div class="video-info">
+                <p class="video-title">
+                  <a class="video-link" href="https://www.youtube.com/watch?v=ixmxOlcrlUc">
+                    The SECRET to Super Human STRENGTH
+                  </a>
+                </p>
+                <p class="channel-name">
+                  <a class="channel-link" href="https://www.youtube.com/c/OFFICIALTHENXSTUDIOS">
+                    ThenX
+                  </a>
+                </p>
+                <p class="video-stats">
+                  20M views · 3 year ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="thumbnail-container">
+              <a href="https://www.youtube.com/watch?v=R2vXbFp5C9o">
+                <img class="thumbnail" src="./YouTube Exercise_files/thumbnail-10.webp">
+              </a>
+              <div class="video-time">7:53</div>
+            </div>
+            <div class="video-info-grid">
+              <div class="channel-profile-pic">
+                <a href="https://www.youtube.com/user/businessinsider">
+                  <img src="./YouTube Exercise_files/channel-10.jpeg">
+                </a>
+              </div>
+              <div class="video-info">
+                <p class="video-title">
+                  <a class="video-link" href="https://www.youtube.com/watch?v=R2vXbFp5C9o">
+                    How The World's Largest Cruise Ship Makes 30,000 Meals Every Day
+                  </a>
+                </p>
+                <p class="channel-name">
+                  <a class="channel-link" href="https://www.youtube.com/user/businessinsider">
+                    Business Insider
+                  </a>
+                </p>
+                <p class="video-stats">
+                  14M views · 1 year ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="thumbnail-container">
+              <a href="https://www.youtube.com/watch?v=0nZuYyXET3s">
+                <img class="thumbnail" src="./YouTube Exercise_files/thumbnail-11.webp">
+              </a>
+              <div class="video-time">4:10</div>
+            </div>
+            <div class="video-info-grid">
+              <div class="channel-profile-pic">
+                <a href="https://www.youtube.com/c/Destinationtips">
+                  <img src="./YouTube Exercise_files/channel-11.jpeg">
+                </a>
+              </div>
+              <div class="video-info">
+                <p class="video-title">
+                  <a class="video-link" href="https://www.youtube.com/watch?v=0nZuYyXET3s">
+                    Dubai's Crazy Underwater Train and Other Things #Only in Dubai
+                  </a>
+                </p>
+                <p class="channel-name">
+                  <a class="channel-link" href="https://www.youtube.com/c/Destinationtips">
+                    Destination Tips
+                  </a>
+                </p>
+                <p class="video-stats">
+                  3M views · 1 year ago
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="thumbnail-container">
+              <a href="https://www.youtube.com/watch?v=9iMGFqMmUFs">
+                <img class="thumbnail" src="./YouTube Exercise_files/thumbnail-12.webp">
+              </a>
+              <div class="video-time">4:51</div>
+            </div>
+            <div class="video-info-grid">
+              <div class="channel-profile-pic">
+                <a href="https://www.youtube.com/teded">
+                  <img src="./YouTube Exercise_files/channel-12.jpeg">
+                </a>
+              </div>
+              <div class="video-info">
+                <p class="video-title">
+                  <a class="video-link" href="https://www.youtube.com/watch?v=9iMGFqMmUFs">
+                    What would happen if you didn’t drink water? - Mia Nacamulli
+                  </a>
+                </p>
+                <p class="channel-name">
+                  <a class="channel-link" href="https://www.youtube.com/teded">
+                    TED-Ed
+                  </a>
+                </p>
+                <p class="video-stats">
+                  12M views · 5 years ago
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  
+</body></html>
