@@ -7,7 +7,7 @@ It replicates the layout and visual style of the original homepage and is great 
 [Click to View Live Site](https://shiva-kkd.github.io/youtube-clone/)
 
 ## 📸 Screenshot
-*(Add a screenshot image here if available)*
+![Homepage Preview](./thumbnails/homepage-preview.png)
 
 ## 📁 Project Structure
 
@@ -32,9 +32,6 @@ youtube-clone/
 ## 🛠️ Technologies Used
 - HTML5
 - CSS3
-
-## 📸 Screenshot
-![Homepage Preview](./thumbnails/homepage-preview.png)
 
 ## 📌 How to Run
 1. Clone the repository or download the ZIP
